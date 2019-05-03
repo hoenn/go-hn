@@ -121,7 +121,7 @@ const (
 	Job TopType = "jobstories"
 )
 
-// TopStoryIDs issues a GET request to the /<TopType path where TopType
+// TopStoryIDs issues a GET request to the /<TopType> path where TopType
 // is one of the defined enum values. The API will return up to ~500 results
 // for the Top and New categories
 func (h *HNClient) TopStoryIDs(t TopType) ([]int, error) {
@@ -244,15 +244,15 @@ type Comment struct {
 
 // Story represents a HackerNews submitted story
 type Story struct {
-	By         string
-	Decendants int
-	ID         int
-	Kids       []int
-	Score      int
-	Time       int
-	Title      string
-	Type       string
-	URL        string
+	By          string
+	Descendants int
+	ID          int
+	Kids        []int
+	Score       int
+	Time        int
+	Title       string
+	Type        string
+	URL         string
 }
 
 // Poll represents a HackerNews poll. It contains a Parts field that describes the related
