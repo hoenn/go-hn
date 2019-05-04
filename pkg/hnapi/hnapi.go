@@ -28,7 +28,7 @@ func NewHNClient() *HNClient {
 // It returns an empty interface to be asserted into one of the hnapi types
 // Story, Comment, Poll, PollOpt or an error
 func (h *HNClient) Item(id string) (interface{}, error) {
-	url := HNObjURLString("item", id)
+	url := hnObjURLString("item", id)
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not make GET request for item")
@@ -42,7 +42,7 @@ func (h *HNClient) Item(id string) (interface{}, error) {
 		return nil, errors.Wrap(err, "could not read response body")
 	}
 
-	var t typeWrapper
+	var t msgWrapper
 	if err := json.Unmarshal(body, &t); err != nil {
 		return nil, errors.Wrap(err, "could not unmarshal response body")
 	}
@@ -83,7 +83,7 @@ func (h *HNClient) Item(id string) (interface{}, error) {
 // returns a HNUser struct containing the details from
 // the response
 func (h *HNClient) User(id string) (*HNUser, error) {
-	url := HNObjURLString("user", id)
+	url := hnObjURLString("user", id)
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not make GET request")
@@ -125,7 +125,7 @@ const (
 // is one of the defined enum values. The API will return up to ~500 results
 // for the Top and New categories
 func (h *HNClient) TopStoryIDs(t TopType) ([]int, error) {
-	url := HNURLString(fmt.Sprint(t))
+	url := hnURLString(fmt.Sprint(t))
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not make GET request for top stories")
@@ -151,7 +151,7 @@ func (h *HNClient) TopStoryIDs(t TopType) ([]int, error) {
 // largest item id. This can be used to request information for all items by
 // walking backwards
 func (h *HNClient) MaxItemID() (int, error) {
-	url := HNURLString("maxitem")
+	url := hnURLString("maxitem")
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return -1, errors.Wrap(err, "could not make GET request for max item id")
@@ -177,7 +177,7 @@ func (h *HNClient) MaxItemID() (int, error) {
 // and profile changes. Items are updates to posts and comments and profiles are
 // the IDs of the profiles that have recently changed
 func (h *HNClient) Updates() (*Update, error) {
-	url := HNURLString("updates")
+	url := hnURLString("updates")
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not make GET request for updates")
@@ -199,15 +199,15 @@ func (h *HNClient) Updates() (*Update, error) {
 	return u, nil
 }
 
-// HNObjURLString is a helper function that returns an http URL for an api path like
+// hnObjURLString is a helper function that returns an http URL for an api path like
 // .../v0/<obj>/<id>.json
-func HNObjURLString(obj, id string) string {
+func hnObjURLString(obj, id string) string {
 	return hnAddr + obj + "/" + id + ".json"
 }
 
-// HNURLString is a helper function that returns an http URL for an api path like
+// hnURLString is a helper function that returns an http URL for an api path like
 // .../v0/<path>.json
-func HNURLString(path string) string {
+func hnURLString(path string) string {
 	return hnAddr + path + ".json"
 }
 
@@ -220,14 +220,14 @@ type Update struct {
 // HNUser represents a HackerNews user profile
 type HNUser struct {
 	About     string
-	Created   int
+	Created   int64
 	Delay     int
 	ID        string
 	Karma     int
 	Submitted []int
 }
 
-type typeWrapper struct {
+type msgWrapper struct {
 	Type string
 }
 
@@ -238,7 +238,7 @@ type Comment struct {
 	Kids   []int
 	Parent int
 	Text   string
-	Time   int
+	Time   int64
 	Type   string
 }
 
@@ -249,7 +249,7 @@ type Story struct {
 	ID          int
 	Kids        []int
 	Score       int
-	Time        int
+	Time        int64
 	Title       string
 	Type        string
 	URL         string
@@ -265,7 +265,7 @@ type Poll struct {
 	Parts       []int
 	Score       int
 	Text        string
-	Time        int
+	Time        int64
 	Title       string
 	Type        string
 }
@@ -277,6 +277,6 @@ type PollOpt struct {
 	Poll  int
 	Score int
 	Text  string
-	Time  int
+	Time  int64
 	Type  string
 }
