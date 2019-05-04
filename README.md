@@ -19,7 +19,7 @@ then create the client with
 ```
 
 ### Concepts
-Stories, comments, jobs, asks and polls are all "items" and `Item(id string) (interface{}, error)` requires you to switch on the returned item's type to use the following structs:
+Stories, comments, jobs, asks and polls are all "items" and `Item(id string) (interface{}, error)` encourages you to assert the type of the item returned:
 
 #### Items
 
