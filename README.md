@@ -90,16 +90,16 @@ Submitted   | `[]int`     | List of all item submissions by user
 ##### Top Stories
 There are additional functions in the `hnapi` package for getting the "Top" stories by type as determined by the API itself. You can call `client.TopStoryIDs` passing one of the following `TopType`:
 ```
-	//Top is for the top ~500 stories
-	Top TopType = "topstories"
-	//New is for the new stories
-	New TopType = "newstories"
-	//Best is for the highest ranking stories
-	Best TopType = "beststories"
-	//Show is for stories categorized as 'Show'
-	Show TopType = "showstories"
-	//Job is for stories categorized as 'Jobs'
-	Job TopType = "jobstories"
+//Top is for the top ~500 stories
+Top TopType = "topstories"
+//New is for the new stories
+New TopType = "newstories"
+//Best is for the highest ranking stories
+Best TopType = "beststories"
+//Show is for stories categorized as 'Show'
+Show TopType = "showstories"
+//Job is for stories categorized as 'Jobs'
+Job TopType = "jobstories"
 ```
 Any of the `TopType` options will return up to ~500 item ids.
 
