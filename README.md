@@ -2,7 +2,7 @@
 [![Documentation](https://godoc.org/github.com/Hoenn/go-hn?status.svg)](http://godoc.org/github.com/Hoenn/go-hn)
 
 ## go-hn
-A go wrapper for the HackerNews Firebase API.
+`go` wrapper for the HackerNews Firebase API.
 
 ### Getting started
 
