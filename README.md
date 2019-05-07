@@ -142,9 +142,9 @@ func main() {
     maxItem, err := c.Item(maxID)
     //...
     switch maxItem.(type) {
-        case hnapi.Story:
+        case *hnapi.Story:
             //...
-        case hnapi.Comment:
+        case *hnapi.Comment:
             //...
     }
 }
