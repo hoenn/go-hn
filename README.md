@@ -149,3 +149,22 @@ func main() {
     }
 }
 ```
+
+### CLI
+The repository also contains `go-hn-cli` which may be useful. To use it:
+```
+# Navigate to the package
+cd cmd/go-hn-cli
+
+# Create binary in directory
+go build
+./go-hn-cli GetItem -i 8373
+
+# Install binary to path
+go install
+go-hn-cli GetItem -i 8373
+
+# Without building or installing
+go run main.go GetItem -i 8373
+```
+
