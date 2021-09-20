@@ -89,16 +89,16 @@ Submitted   | `[]int`     | List of all item submissions by user
 
 ##### Top Stories
 There are additional functions in the `hnapi` package for getting the "Top" stories by type as determined by the API itself. You can call `client.TopStoryIDs` passing one of the following `TopType`:
-```
-//Top is for the top ~500 stories
+```go
+// Top is for the top ~500 stories.
 Top TopType = "topstories"
-//New is for the new stories
+// New is for the new stories.
 New TopType = "newstories"
-//Best is for the highest ranking stories
+// Best is for the highest ranking stories.
 Best TopType = "beststories"
-//Show is for stories categorized as 'Show'
+// Show is for stories categorized as 'Show'.
 Show TopType = "showstories"
-//Job is for stories categorized as 'Jobs'
+// Job is for stories categorized as 'Jobs'.
 Job TopType = "jobstories"
 ```
 Any of the `TopType` options will return up to ~500 item ids.
@@ -122,23 +122,23 @@ import (
 )
 
 func main() {
-    //Create the client
+    // Create client.
     c := hnapi.NewHNClient()
 
-    //Display a specific user's karma
+    // Display a specific user's karma.
     user, err := c.User("someuser")
     if err != nil {
         panic(err)
     }
     fmt.Println(user.Karma)
 
-    //Get the current max item id
+    // Get the current max item id.
     maxID, err := c.MaxItemID()
     if err != nil {
         panic(err)
     }
 
-    //Get the details of the current max item
+    // Get the details of the current max item.
     maxItem, err := c.Item(maxID)
     //...
     switch maxItem.(type) {
@@ -153,18 +153,18 @@ func main() {
 ### CLI
 The repository also contains `go-hn-cli` which may be useful. To use it:
 ```
-# Navigate to the package
+# Navigate to the package.
 cd cmd/go-hn-cli
 
-# Create binary in directory
+# Create binary in directory.
 go build
 ./go-hn-cli GetItem -i 8373
 
-# Install binary to path
+# Install binary to path.
 go install
 go-hn-cli GetItem -i 8373
 
-# Without building or installing
+# Without building or installing.
 go run main.go GetItem -i 8373
 ```
 
