@@ -8,12 +8,12 @@
 
 Add this package to your `go` path.
 
-`go get github.com/Hoenn/go-hn`
+`go get github.com/hoenn/go-hn`
 
 then create the client with
 
 ```go
- import "github.com/Hoenn/go-hn/pkg/hnapi"
+ import "github.com/hoenn/go-hn/pkg/hnapi"
  //...
  c := hnapi.NewHNClient()
 ```
@@ -118,7 +118,7 @@ package main
 
 import (
     "fmt"
-    "github.com/Hoenn/go-hn/pkg/hnapi"
+    "github.com/hoenn/go-hn/pkg/hnapi"
 )
 
 func main() {
