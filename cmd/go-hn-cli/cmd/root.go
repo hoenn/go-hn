@@ -44,7 +44,7 @@ func prettyPrint(i interface{}) string {
 
 func errorMsgWithExit(err error) {
 	if err != nil {
-		fmt.Println(red(fmt.Sprintf("An error occured: %s", err)))
+		fmt.Println(red(fmt.Sprintf("An error occurred: %s", err)))
 		os.Exit(1)
 	}
 }

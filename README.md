@@ -1,5 +1,5 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/hoenn/go-hn)](https://goreportcard.com/report/github.com/hoenn/go-hn)
-[![Documentation](https://godoc.org/github.com/Hoenn/go-hn?status.svg)](http://godoc.org/github.com/Hoenn/go-hn)
+[![Go Reference](https://pkg.go.dev/badge/github.com/hoenn/go-hn.svg)](https://pkg.go.dev/github.com/hoenn/go-hn)
 
 ## go-hn
 `go` wrapper for the HackerNews Firebase API.
