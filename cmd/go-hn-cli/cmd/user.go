@@ -11,7 +11,10 @@ var userID string
 func init() {
 	rootCmd.AddCommand(getUserCmd)
 	getUserCmd.Flags().StringVarP(&userID, "userid", "u", "", "id of a user")
-	getUserCmd.MarkFlagRequired("userid")
+	err := getUserCmd.MarkFlagRequired("userid")
+	if err != nil {
+		errorMsgWithExit(err)
+	}
 }
 
 var getUserCmd = &cobra.Command{
@@ -21,7 +24,7 @@ var getUserCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		user, err := client.User(userID)
 		if err != nil {
-			fmt.Println(red(fmt.Sprintf("An error occured: %v", err)))
+			errorMsgWithExit(err)
 		}
 		fmt.Print(prettyPrint(user))
 	},
