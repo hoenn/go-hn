@@ -11,7 +11,10 @@ var itemID string
 func init() {
 	rootCmd.AddCommand(getItemCmd)
 	getItemCmd.Flags().StringVarP(&itemID, "id", "i", "", "id of an item")
-	getItemCmd.MarkFlagRequired("id")
+	err := getItemCmd.MarkFlagRequired("id")
+	if err != nil {
+		errorMsgWithExit(err)
+	}
 }
 
 var getItemCmd = &cobra.Command{
@@ -21,7 +24,7 @@ var getItemCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		item, err := client.Item(itemID)
 		if err != nil {
-			fmt.Println(red(fmt.Sprintf("An error occured: %v", err)))
+			errorMsgWithExit(err)
 		}
 		fmt.Print(prettyPrint(item))
 	},

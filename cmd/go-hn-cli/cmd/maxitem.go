@@ -17,7 +17,7 @@ var maxItemCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		item, err := client.MaxItemID()
 		if err != nil {
-			fmt.Println(red(fmt.Sprintf("An error occured: %v", err)))
+			errorMsgWithExit(err)
 		}
 		fmt.Printf("%v\n", prettyPrint(item))
 	},

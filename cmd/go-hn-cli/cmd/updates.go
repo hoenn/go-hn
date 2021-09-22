@@ -17,7 +17,7 @@ var getUpdatesCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		updates, err := client.Updates()
 		if err != nil {
-			fmt.Println(red(fmt.Sprintf("An error occured: %v", err)))
+			errorMsgWithExit(err)
 		}
 		fmt.Print(prettyPrint(updates))
 	},
