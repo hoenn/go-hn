@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/pkg/errors"
 )
 
 const hnAddr = "https://hacker-news.firebaseio.com/v0/"
@@ -31,20 +29,20 @@ func (h *HNClient) Item(id string) (interface{}, error) {
 	url := hnObjURLString("item", id)
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not make GET request for item")
+		return nil, fmt.Errorf("could not make GET request for item: %w", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, errors.Wrap(err, "non 200 response code")
+		return nil, fmt.Errorf("non 200 response code: %w", err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not read response body")
+		return nil, fmt.Errorf("could not read response body: %w", err)
 	}
 
 	var t msgWrapper
 	if err := json.Unmarshal(body, &t); err != nil {
-		return nil, errors.Wrap(err, "could not unmarshal response body")
+		return nil, fmt.Errorf("could not unmarshal response body: %w", err)
 	}
 	var res interface{}
 	switch t.Type {
@@ -73,7 +71,7 @@ func (h *HNClient) Item(id string) (interface{}, error) {
 		}
 		res = p
 	default:
-		return nil, errors.New("unknown item type, open a github issue")
+		return nil, fmt.Errorf("unknown item type, open a github issue: %w", err)
 	}
 
 	return res, nil
@@ -86,20 +84,20 @@ func (h *HNClient) User(id string) (*HNUser, error) {
 	url := hnObjURLString("user", id)
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not make GET request")
+		return nil, fmt.Errorf("could not make GET request: %w", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, errors.Wrap(err, "non 200 response code")
+		return nil, fmt.Errorf("non 200 response code: %w", err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not read response body")
+		return nil, fmt.Errorf("could not read response body: %w", err)
 	}
 	u := &HNUser{}
 	err = json.Unmarshal(body, u)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not unmarshal response body")
+		return nil, fmt.Errorf("could not unmarshal response body: %w", err)
 	}
 
 	return u, nil
@@ -128,20 +126,20 @@ func (h *HNClient) TopStoryIDs(t TopType) ([]int, error) {
 	url := hnURLString(fmt.Sprint(t))
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not make GET request for top stories")
+		return nil, fmt.Errorf("could not make GET request for top stories: %w", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, errors.Wrap(err, "non 200 response code")
+		return nil, fmt.Errorf("non 200 response code: %w", err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not read response body")
+		return nil, fmt.Errorf("could not read response body: %w", err)
 	}
 	var top []int
 	err = json.Unmarshal(body, &top)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not unmarshal top stories ids")
+		return nil, fmt.Errorf("could not unmarshal top stories ids: %w", err)
 	}
 
 	return top, nil
@@ -154,20 +152,20 @@ func (h *HNClient) MaxItemID() (int, error) {
 	url := hnURLString("maxitem")
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
-		return -1, errors.Wrap(err, "could not make GET request for max item id")
+		return -1, fmt.Errorf("could not make GET request for max item id: %w", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return -1, errors.Wrap(err, "non 200 response code")
+		return -1, fmt.Errorf("non 200 response code: %w", err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return -1, errors.Wrap(err, "could not read response body")
+		return -1, fmt.Errorf("could not read response body: %w", err)
 	}
 	var max int
 	err = json.Unmarshal(body, &max)
 	if err != nil {
-		return -1, errors.Wrap(err, "could not unmarshal max item id")
+		return -1, fmt.Errorf("could not unmarshal max item id: %w", err)
 	}
 
 	return max, nil
@@ -180,20 +178,20 @@ func (h *HNClient) Updates() (*Update, error) {
 	url := hnURLString("updates")
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not make GET request for updates")
+		return nil, fmt.Errorf("could not make GET request for updates: %w", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, errors.Wrap(err, "non 200 response code")
+		return nil, fmt.Errorf("non 200 response code: %w", err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not read response body")
+		return nil, fmt.Errorf("could not read response body: %w", err)
 	}
 	u := &Update{}
 	err = json.Unmarshal(body, u)
 	if err != nil {
-		return nil, errors.Wrap(err, "could not unmarshal updates")
+		return nil, fmt.Errorf("could not unmarshal updates: %w", err)
 	}
 
 	return u, nil
