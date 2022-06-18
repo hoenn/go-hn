@@ -11,6 +11,7 @@ const hnAddr = "https://hacker-news.firebaseio.com/v0/"
 
 // HNClient wraps an http client with methods to query the Hacker News firebase API.
 type HNClient struct {
+	url        string
 	httpClient *http.Client
 }
 
@@ -18,6 +19,17 @@ type HNClient struct {
 func NewHNClient() *HNClient {
 	return &HNClient{
 		httpClient: &http.Client{},
+		url:        hnAddr,
+	}
+}
+
+// NewHNClientWithURL returns an HNClient that will send all client request to the specified URL.
+// This client is dependent on the API schema defined here:
+// https://github.com/HackerNews/API/blob/9a57f04559388cc657d8b47b67fe0a687519ba4f/README.md
+func NewHNClientWithURL(url string) *HNClient {
+	return &HNClient{
+		httpClient: &http.Client{},
+		url:        url,
 	}
 }
 
@@ -26,7 +38,7 @@ func NewHNClient() *HNClient {
 // It returns an empty interface to be asserted into one of the hnapi types
 // Story, Comment, Poll, PollOpt or an error.
 func (h *HNClient) Item(id string) (interface{}, error) {
-	url := hnObjURLString("item", id)
+	url := h.objURLString("item", id)
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("could not make GET request for item: %w", err)
@@ -81,7 +93,7 @@ func (h *HNClient) Item(id string) (interface{}, error) {
 // returns a HNUser struct containing the details from
 // the response.
 func (h *HNClient) User(id string) (*HNUser, error) {
-	url := hnObjURLString("user", id)
+	url := h.objURLString("user", id)
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("could not make GET request: %w", err)
@@ -123,7 +135,7 @@ const (
 // is one of the defined enum values. The API will return up to ~500 results
 // for the Top and New categories.
 func (h *HNClient) TopStoryIDs(t TopType) ([]int, error) {
-	url := hnURLString(fmt.Sprint(t))
+	url := h.urlString(fmt.Sprint(t))
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("could not make GET request for top stories: %w", err)
@@ -149,7 +161,7 @@ func (h *HNClient) TopStoryIDs(t TopType) ([]int, error) {
 // largest item id. This can be used to request information for all items by
 // walking backwards.
 func (h *HNClient) MaxItemID() (int, error) {
-	url := hnURLString("maxitem")
+	url := h.urlString("maxitem")
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return -1, fmt.Errorf("could not make GET request for max item id: %w", err)
@@ -175,7 +187,7 @@ func (h *HNClient) MaxItemID() (int, error) {
 // and profile changes. Items are updates to posts and comments and profiles are
 // the IDs of the profiles that have recently changed.
 func (h *HNClient) Updates() (*Update, error) {
-	url := hnURLString("updates")
+	url := h.urlString("updates")
 	resp, err := h.httpClient.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("could not make GET request for updates: %w", err)
@@ -197,16 +209,16 @@ func (h *HNClient) Updates() (*Update, error) {
 	return u, nil
 }
 
-// hnObjURLString is a helper function that returns an http URL for an api path like
+// objURLString is a helper function that returns an http URL for an api path like
 // .../v0/<obj>/<id>.json.
-func hnObjURLString(obj, id string) string {
-	return hnAddr + obj + "/" + id + ".json"
+func (h *HNClient) objURLString(obj, id string) string {
+	return h.url + obj + "/" + id + ".json"
 }
 
-// hnURLString is a helper function that returns an http URL for an api path like
+// urlString is a helper function that returns an http URL for an api path like
 // .../v0/<path>.json.
-func hnURLString(path string) string {
-	return hnAddr + path + ".json"
+func (h *HNClient) urlString(path string) string {
+	return h.url + path + ".json"
 }
 
 // Update represents the response from the 'updates' path.
