@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-const hnAddr = "https://hacker-news.firebaseio.com/v0/"
+const hnAddr = "https://hacker-news.firebaseio.com/v0"
 
 // HNClient wraps an http client with methods to query the Hacker News firebase API.
 type HNClient struct {
@@ -212,13 +212,13 @@ func (h *HNClient) Updates() (*Update, error) {
 // objURLString is a helper function that returns an http URL for an api path like
 // .../v0/<obj>/<id>.json.
 func (h *HNClient) objURLString(obj, id string) string {
-	return h.url + obj + "/" + id + ".json"
+	return fmt.Sprintf("%s/%s/%s.json", h.url, obj, id)
 }
 
 // urlString is a helper function that returns an http URL for an api path like
 // .../v0/<path>.json.
 func (h *HNClient) urlString(path string) string {
-	return h.url + path + ".json"
+	return fmt.Sprintf("%s/%s.json", h.url, path)
 }
 
 // Update represents the response from the 'updates' path.
