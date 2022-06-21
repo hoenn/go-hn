@@ -19,9 +19,25 @@ then create the client with
 ```
 
 ### Concepts
-Stories, comments, jobs, asks and polls are all "items" and `Item(id string) (interface{}, error)` encourages you to assert the type of the item returned:
-
+Stories, comments, jobs, asks and polls are all "items". `Item` contains a superset of the properties in each subtype. Helpers like `GetComment` can help reduce Item into a more specific Comment type.
 #### Items
+##### Item
+Field | Type | Description
+------|------|------------
+By      | `string`    | The username of the story's author
+Delete | `bool` | If this item has been deleted
+Dead | `bool` | If this item has been marked Dead
+ID      | `int`       | This story's item id
+Descendants | `int`   | The total comment count
+Kids    | `[]int`     | The ids of the story's comments, in ranked display order.
+Score   | `int`       | The story's score
+Time    | `int64`     | Creation date of the story in Unix Time
+Timestamp   | `time.Time`     | Creation date of the story
+Title   | `string`    | The story's title
+URL     | `string`    | The URL of the story
+Type    | `string`    | The type of item ("story")
+Poll | `int` | Associated Poll
+Parts | `int` | Associated Poll Options
 
 ##### Story
 Field | Type | Description
@@ -32,6 +48,7 @@ Descendants | `int`   | The total comment count
 Kids    | `[]int`     | The ids of the story's comments, in ranked display order.
 Score   | `int`       | The story's score
 Time    | `int64`     | Creation date of the story in Unix Time
+Timestamp   | `time.Time`     | Creation date of the story
 Title   | `string`    | The story's title
 URL     | `string`    | The URL of the story
 Type    | `string`    | The type of item ("story")
@@ -44,6 +61,7 @@ ID      | `int`       | This comments's item id
 Kids    | `[]int`     | The ids of the story's comments, in ranked display order.
 Parent  | `int`       | The comment's parent (another comment or the original story)
 Time    | `int64`     | Creation date of the comment in Unix Time
+Timestamp   | `time.Time`     | Creation date of the story
 Text    | `string`    | The comment's text
 Type    | `string`    | The type of item ("comment")
 
@@ -56,6 +74,7 @@ Descendants | `int`   | The total comment count
 Kids    | `[]int`     | The ids of the poll's comments, in ranked display order.
 Score   | `int`       | The poll's score
 Time    | `int64`     | Creation date of the poll in Unix Time
+Timestamp   | `time.Time`     | Creation date of the story
 Title   | `string`    | The poll's title
 URL     | `string`    | The URL of the poll
 Type    | `string`    | The type of item ("poll")
@@ -68,6 +87,7 @@ By      | `string`    | The username of the pollopt's author
 ID      | `int`       | This pollopt's item id
 Poll    | `int`       | The pollopt's parent (the poll it belongs to)
 Time    | `int64`     | Creation date of the pollopt in Unix Time
+Timestamp   | `time.Time`     | Creation date of the story
 Text    | `string`    | The pollopt's text
 Type    | `string`    | The type of item ("pollopt")
 
@@ -139,14 +159,13 @@ func main() {
     }
 
     // Get the details of the current max item.
-    maxItem, err := c.Item(maxID)
-    //...
-    switch maxItem.(type) {
-        case *hnapi.Story:
-            //...
-        case *hnapi.Comment:
-            //...
-    }
+    maxItem, err := c.GetItem(maxID)
+    // ...
+
+    id := 478932 // Some comment ID.
+    comment, err := c.GetComment(id)
+    fmt.Println(comment.By)
+    // ...
 }
 ```
 
