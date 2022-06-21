@@ -35,7 +35,7 @@ func NewHNClientWithURL(url string) *HNClient {
 }
 
 // Deprecated: Item is deprecated. Use GetItem or a more specialized method like GetComment instead.
-// This was deprecated because it pushed type casting into client code. There are now helper like
+// This was deprecated because it pushed type assertion into client code. There are now helpers like
 // GetStory and ItemToComment to avoid returning an interface{} for clients to deal with.
 // Item issues a GET request on the /item/<id> path and creates a struct
 // from the response body.
@@ -139,13 +139,14 @@ func ItemToComment(item *Item) (*Comment, error) {
 		return nil, fmt.Errorf("item is not a comment")
 	}
 	return &Comment{
-		By:     item.By,
-		ID:     item.ID,
-		Kids:   item.Kids,
-		Parent: item.Parent,
-		Text:   item.Text,
-		Time:   item.Time,
-		Type:   item.Type,
+		By:        item.By,
+		ID:        item.ID,
+		Kids:      item.Kids,
+		Parent:    item.Parent,
+		Text:      item.Text,
+		Time:      item.Time,
+		Timestamp: item.Timestamp,
+		Type:      item.Type,
 	}, nil
 }
 
@@ -170,6 +171,7 @@ func ItemToStory(item *Item) (*Story, error) {
 		Kids:        item.Kids,
 		Score:       item.Score,
 		Time:        item.Time,
+		Timestamp:   item.Timestamp,
 		Title:       item.Title,
 		Type:        item.Type,
 		URL:         item.URL,
@@ -199,6 +201,7 @@ func ItemToPoll(item *Item) (*Poll, error) {
 		Score:       item.Score,
 		Text:        item.Text,
 		Time:        item.Time,
+		Timestamp:   item.Timestamp,
 		Title:       item.Title,
 		Type:        item.Type,
 	}, nil
@@ -219,13 +222,14 @@ func ItemToPollOpt(item *Item) (*PollOpt, error) {
 		return nil, fmt.Errorf("item is not a pollopt")
 	}
 	return &PollOpt{
-		By:    item.By,
-		ID:    item.ID,
-		Poll:  item.Poll,
-		Score: item.Score,
-		Text:  item.Text,
-		Time:  item.Time,
-		Type:  item.Type,
+		By:        item.By,
+		ID:        item.ID,
+		Poll:      item.Poll,
+		Score:     item.Score,
+		Text:      item.Text,
+		Time:      item.Time,
+		Timestamp: item.Timestamp,
+		Type:      item.Type,
 	}, nil
 }
 
@@ -413,13 +417,14 @@ type Item struct {
 
 // Comment represents a HackerNews comment on a story.
 type Comment struct {
-	By     string
-	ID     int
-	Kids   []int
-	Parent int
-	Text   string
-	Time   int64
-	Type   string
+	By        string
+	ID        int
+	Kids      []int
+	Parent    int
+	Text      string
+	Time      int64
+	Timestamp time.Time
+	Type      string
 }
 
 // Story represents a HackerNews submitted story.
@@ -430,6 +435,7 @@ type Story struct {
 	Kids        []int
 	Score       int
 	Time        int64
+	Timestamp   time.Time
 	Title       string
 	Type        string
 	URL         string
@@ -446,17 +452,19 @@ type Poll struct {
 	Score       int
 	Text        string
 	Time        int64
+	Timestamp   time.Time
 	Title       string
 	Type        string
 }
 
 // PollOpt represents the poll options from a given poll.
 type PollOpt struct {
-	By    string
-	ID    int
-	Poll  int
-	Score int
-	Text  string
-	Time  int64
-	Type  string
+	By        string
+	ID        int
+	Poll      int
+	Score     int
+	Text      string
+	Time      int64
+	Timestamp time.Time
+	Type      string
 }
