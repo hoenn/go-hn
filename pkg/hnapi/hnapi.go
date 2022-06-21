@@ -390,10 +390,6 @@ type HNUser struct {
 	Submitted []int
 }
 
-type msgWrapper struct {
-	Type string
-}
-
 // Item represents a HackerNews API item. Its properties are a superset of
 // Story, Comment, Poll, and Pollopt types.
 type Item struct {
