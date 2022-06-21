@@ -32,7 +32,7 @@ Descendants | `int`   | The total comment count
 Kids    | `[]int`     | The ids of the story's comments, in ranked display order.
 Score   | `int`       | The story's score
 Time    | `int64`     | Creation date of the story in Unix Time
-Timestamp   | `time.Time`     | Creation date of the story
+Timestamp   | `time.Time`     | Creation date of the item
 Title   | `string`    | The story's title
 URL     | `string`    | The URL of the story
 Type    | `string`    | The type of item ("story")
@@ -61,7 +61,7 @@ ID      | `int`       | This comments's item id
 Kids    | `[]int`     | The ids of the story's comments, in ranked display order.
 Parent  | `int`       | The comment's parent (another comment or the original story)
 Time    | `int64`     | Creation date of the comment in Unix Time
-Timestamp   | `time.Time`     | Creation date of the story
+Timestamp   | `time.Time`     | Creation date of the comment
 Text    | `string`    | The comment's text
 Type    | `string`    | The type of item ("comment")
 
@@ -74,7 +74,7 @@ Descendants | `int`   | The total comment count
 Kids    | `[]int`     | The ids of the poll's comments, in ranked display order.
 Score   | `int`       | The poll's score
 Time    | `int64`     | Creation date of the poll in Unix Time
-Timestamp   | `time.Time`     | Creation date of the story
+Timestamp   | `time.Time`     | Creation date of the poll
 Title   | `string`    | The poll's title
 URL     | `string`    | The URL of the poll
 Type    | `string`    | The type of item ("poll")
@@ -87,7 +87,7 @@ By      | `string`    | The username of the pollopt's author
 ID      | `int`       | This pollopt's item id
 Poll    | `int`       | The pollopt's parent (the poll it belongs to)
 Time    | `int64`     | Creation date of the pollopt in Unix Time
-Timestamp   | `time.Time`     | Creation date of the story
+Timestamp   | `time.Time`     | Creation date of the pollopt
 Text    | `string`    | The pollopt's text
 Type    | `string`    | The type of item ("pollopt")
 
