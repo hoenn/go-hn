@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 const hnAddr = "https://hacker-news.firebaseio.com/v0"
@@ -127,6 +128,8 @@ func (h *HNClient) GetItem(id string) (*Item, error) {
 	if err := json.Unmarshal(body, i); err != nil {
 		return nil, fmt.Errorf("could not unmarshal response body: %w", err)
 	}
+
+	i.Timestamp = time.Unix(i.Time, 0)
 	return i, nil
 }
 
@@ -395,6 +398,7 @@ type Item struct {
 	Type        string
 	By          string
 	Time        int64
+	Timestamp   time.Time // Not directly available in the API.
 	Text        string
 	Dead        bool
 	Parent      int
